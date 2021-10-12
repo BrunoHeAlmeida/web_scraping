@@ -1,11 +1,8 @@
-# importando bibliotecas
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
-from threading import Lock
 import pandas as pd
 import datetime
 import time
-import csv
 import re
 
 # usuario e pagina para obter html
@@ -14,28 +11,20 @@ usuario = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/
 dados_clientes = []
 lista_CNPJ = []
 
-with open('C:\\Users\\Bruno\\Desktop\\projeto_01\\Entrada\\Lista_CNPJ1.csv', 'r') as csv_arquivo:
-    csv_conteudo = csv.reader(csv_arquivo)
-    
-    for linha in csv_conteudo:
-        lista_CNPJ.append((', '.join(linha)))
-
-mutex = Lock()
-
+# Processo de automação para coleta dos dados
 def web_scraping(lista_CNPJ):
-    # Processo de automação para coleta dos dados
-    print('iniciou.....: ' + str(datetime.datetime.now()))
+    print('iniciou..: ' + str(datetime.datetime.now()))
     for item in lista_CNPJ:
       url = pagina + item
       req = Request(url, headers=usuario)
       html = urlopen(req)
       soup = BeautifulSoup(html, 'html.parser')
       
-    # list comprehension do conteúdo do html
-      lista = [item.getText() for item in soup.findAll('p', {'data-v-0adacb42': ''})]
+      # list comprehension do conteúdo do html
+      lista  = [item.getText() for item in soup.findAll('p', {'data-v-0adacb42': ''})]
       lista2 = [item.getText() for item in soup.findAll('a', {'data-v-0adacb42': ''}, href = True)]
 
-    # filtrando os campos dos dados e manipulando os dados
+      # filtrando os campos dos dados e manipulando os dados
       cnpj = lista[lista.index('CNPJ')+1]
       p = re.compile(r'\d')
       cnpj = p.findall(cnpj)
@@ -62,7 +51,7 @@ def web_scraping(lista_CNPJ):
 
       data_cadastral = lista[lista.index('Data da Situação Cadastral')+1]
         
-        # corrigir formatação do float
+      # corrigir formatação do float
       capital = lista[lista.index('Capital Social')+1]
       if capital[-3:-2] == ".":
         p = re.compile('[^,][0-9]+')
@@ -96,7 +85,7 @@ def web_scraping(lista_CNPJ):
       if(complemento == ''):
         complemento = 'NONE'
       else:
-        complemento = complemento.replace("  "," ")
+        complemento = complemento.replace(" ","").replace(";", " ").replace(":","").strip()
 
       cep = lista[lista.index('CEP')+1]
       if(cep == ''):
@@ -155,7 +144,7 @@ def web_scraping(lista_CNPJ):
       if(secundaria == []):
         secundaria = 'NONE'
 
-    # dicionário dos dados obtidos
+      # dicionário dos dados obtidos
       dados = {'CNPJ':cnpj,
             'Razao_social':razao,
             'Nome_fantasia':fantasia,
@@ -181,6 +170,7 @@ def web_scraping(lista_CNPJ):
       dados_clientes.append(dados)
       time.sleep(0.01)
 
+    # exportando os conteúdo obtido para um csv
     csv_conteudo = pd.DataFrame(dados_clientes)
     csv_conteudo.to_csv('C:\\Users\\Bruno\\Desktop\\web_scraping\\Saida\\dados.csv', sep = ';', index = False, encoding = 'utf-8-sig')
-    print('terminou....: ' + str(datetime.datetime.now()))
+    print('terminou.: ' + str(datetime.datetime.now()))
