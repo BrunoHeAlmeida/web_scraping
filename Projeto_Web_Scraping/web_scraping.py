@@ -85,7 +85,7 @@ def web_scraping(lista_CNPJ):
       if(complemento == ''):
         complemento = 'NONE'
       else:
-        complemento = complemento.replace(" ","").replace(";", " ").replace(":","").strip()
+        complemento = complemento.replace("  ","").replace(";", " ").replace(":","").strip()
 
       cep = lista[lista.index('CEP')+1]
       if(cep == ''):
