@@ -13,7 +13,6 @@ lista_CNPJ = []
 
 # Processo de automação para coleta dos dados
 def web_scraping(lista_CNPJ):
-    print('iniciou..: ' + str(datetime.datetime.now()))
     for item in lista_CNPJ:
       url = pagina + item
       req = Request(url, headers=usuario)
@@ -173,4 +172,3 @@ def web_scraping(lista_CNPJ):
     # exportando os conteúdo obtido para um csv
     csv_conteudo = pd.DataFrame(dados_clientes)
     csv_conteudo.to_csv('C:\\Users\\Bruno\\Desktop\\web_scraping\\Saida\\dados.csv', sep = ';', index = False, encoding = 'utf-8-sig')
-    print('terminou.: ' + str(datetime.datetime.now()))
