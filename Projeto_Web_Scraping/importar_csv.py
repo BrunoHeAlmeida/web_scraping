@@ -22,7 +22,7 @@ def csv_conteudo():
         csv_arquivo('C:\\Users\\Bruno\\Desktop\\web_scraping\\Entrada\\' + i, Lista_CNPJ)
     return Lista_CNPJ
 
-# subdivisão das listas
+# subdivisao das listas
 def listas_menores(lista, n):
     for i in range(0, len(lista), n):
         yield lista[i:i + n]

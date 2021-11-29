@@ -3,13 +3,13 @@ from importar_csv import csv_conteudo, listas_menores
 from tqdm import tqdm
 from threading import Thread
 
-# listas de CNPJ's dos CSV's
+# listas de CNPJs dos CSVs
 Lista_CNPJ = csv_conteudo()
 
 divisao = (int(len(Lista_CNPJ) / 4) +1)
 lista_dividida = list(listas_menores(Lista_CNPJ, divisao))
 
-# threads/linhas/filas de Web_Scraping's simultâneos
+# threads linhas filas de WebScrapings simultaneos
 fila_01 = Thread(target=web_scraping,args=(tqdm(lista_dividida[0]),))
 fila_02 = Thread(target=web_scraping,args=(tqdm(lista_dividida[1]),))
 fila_03 = Thread(target=web_scraping,args=(tqdm(lista_dividida[2]),))
