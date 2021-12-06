@@ -6,12 +6,4 @@ Fonte: https://casadosdados.com.br/
 
 Bibliotecas / Módulos utilizadas:
 
-urllib.request / Request, urlopen
-bs4 / BeautifulSoup
-threading / Thread
-tqdm / tqdm
-pandas
-time
-csv
-os
-re
+(urllib.request / Request), urlopen, (bs4 / BeautifulSoup), (threading / Thread), tqdm, pandas, time, csv, os, re
