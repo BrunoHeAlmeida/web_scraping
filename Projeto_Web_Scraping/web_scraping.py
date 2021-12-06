@@ -1,7 +1,6 @@
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 import pandas as pd
-import datetime
 import time
 import re
 
